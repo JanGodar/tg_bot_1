@@ -7,14 +7,16 @@ LEXICON_RU = {
              f'При перезапуске данные не сохранятся\n\n'
              f'/help - получить справочную информацию',
     'not_correct': f'Я не могу тебя понять',
+    'indicators': f'Укажите нужные измерения',
     'width': 2
 }
 
 KEYBOARD_PRAMETERS = {
-    'Ао': 'Ao_button_pressed',
     'ЛП': 'LA_button_pressed',
-    'Посчитать': 'multiply'
+    'Ао': 'Ao_button_pressed',
+    'Посчитать': 'count_up'
 }
+
 
 KEYBOARD_DOG_CAT = {
     'Собака': 'dog',
