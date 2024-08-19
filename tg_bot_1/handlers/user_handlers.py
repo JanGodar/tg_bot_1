@@ -1,4 +1,5 @@
 from copy import deepcopy
+import logging
 
 from aiogram import F, Router
 from aiogram.filters import Command, CommandStart, StateFilter
@@ -11,6 +12,8 @@ from tg_bot_1.keyboards.keyboard import create_keyboard
 
 router = Router()
 
+logger = logging.getLogger(__name__)
+
 class FSMFillForm(StatesGroup):
     fill_dog = State()
     fill_LA = State()
@@ -18,18 +21,23 @@ class FSMFillForm(StatesGroup):
 
 
 @router.message(CommandStart())
-async def process_start_command(message):
+async def process_start_command(message, state):
     users_db[message.from_user.id] = deepcopy(user_dict_template)
     await message.answer(
         text=LEXICON_RU['/start'],
         reply_markup=create_keyboard(KEYBOARD_DOG_CAT,
                                             LEXICON_RU['width']))
-        #?  await state.clear()
+    await state.clear()
+    val = await state.get_state()
+    logger.info('%s', val)
+
 
 
 @router.message(Command(commands=['help']))
-async def process_help_command(message):
+async def process_help_command(message, state):
     await message.answer(LEXICON_RU['/help'])
+    val = await state.get_state()
+    logger.info('%s', val)
 
 
 @router.callback_query(F.data == 'dog')
@@ -39,6 +47,8 @@ async def press_params(callback, state):
         text=LEXICON_RU['indicators'],
         reply_markup=create_keyboard(KEYBOARD_PRAMETERS,
                                             LEXICON_RU['width']))
+    val = await state.get_state()
+    logger.info('%s', val)
 
 
 @router.callback_query(F.data == 'LA_button_pressed',
@@ -48,6 +58,8 @@ async def press_la(callback, state):
     await callback.message.edit_text(
         text='Введите значение ЛП'
     )
+    val = await state.get_state()
+    logger.info('%s', val)
 
 
 @router.message(StateFilter(FSMFillForm.fill_LA))
@@ -58,6 +70,8 @@ async def press_la_val(message, state):
         text=LEXICON_RU['indicators'],
         reply_markup=create_keyboard(KEYBOARD_PRAMETERS,
                                             LEXICON_RU['width']))
+    val = await state.get_state()
+    logger.info('%s', val)
 
 
 @router.callback_query(F.data == 'Ao_button_pressed',
@@ -67,6 +81,8 @@ async def press_ao(callback, state):
     await callback.message.edit_text(
         text='Введите значение Ао'
     )
+    val = await state.get_state()
+    logger.info('%s', val)
 
 
 @router.message(StateFilter(FSMFillForm.fill_Ao))
@@ -77,6 +93,8 @@ async def press_ao_val(message, state):
         text=LEXICON_RU['indicators'],
         reply_markup=create_keyboard(KEYBOARD_PRAMETERS,
                                             LEXICON_RU['width']))
+    val = await state.get_state()
+    logger.info('%s', val)
 
 
 @router.callback_query(F.data == 'count_up')
@@ -86,30 +104,5 @@ async def press_count(callback, state):
     await callback.message.edit_text(
         text=f'LA/Ao = {LA/Ao}'
     )
-
-# @router.message(StateFilter(FSMFillForm.fill_count))
-# async def press_ao(message, state):
-#     users_db[message.from_user.id]['LA'] = int(message.text)
-#     await message.answer('Введите значение Ао')
-
-
-# @router.message(StateFilter(FSMFillForm.fill_count))
-# async def return_to_press(message, state):
-#     users_db[message.from_user.id]['Ao'] = int(message.text)
-#     await state.set_state(FSMFillForm.fill_count)
-#     await message.answer(
-#         text='Продолжайте заполнение значений, либо жмите посчитать',
-#         reply_markup=create_keyboard(KEYBOARD_DOG_CAT,
-#                                             LEXICON_RU['width']))
-
-#     users_db[message.from_user.id]['LA'] = int(message.text)
-#     print(users_db[message.from_user.id]['LA'])
-
-# await message.answer(text='Введите значение ЛП')
-    
-
-
-# @router.callback_query(StateFilter(FSMFillForm.fill_Ao))
-# async def Ao(message, state):
-#     users_db[message.from_user.id]['Ao'] = message.text
-#     await state.clear()
+    val = await state.get_state()
+    logger.info('%s', val)
