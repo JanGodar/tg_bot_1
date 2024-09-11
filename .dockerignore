@@ -1,0 +1,11 @@
+.gitignore
+.git
+.cache
+Makefile
+README.md
+.venv
+**/__pycache__
+poetry.lock
+pyproject.toml
+Dockerfile
+.dockerignore
