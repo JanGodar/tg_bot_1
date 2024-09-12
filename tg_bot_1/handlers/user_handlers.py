@@ -38,8 +38,8 @@ async def process_start_command(message, state):
         text=text,
         reply_markup=create_keyboard(KEYBOARD_DOG_CAT,
                                             LEXICON_RU['width']))
-
-    await state.update_data(attempt = attempt + 1)
+    attempt += 1
+    await state.update_data(attempt)
     print(attempt)
 
     #await state.clear()
