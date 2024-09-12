@@ -1,20 +1,7 @@
-from dataclasses import dataclass
-from environs import Env
+from pydantic import SecretStr, RedisDsn
+from pydantic_settings import BaseSettings
 
 
-@dataclass
-class TgBot:
-    token: str
-
-
-@dataclass
-class Config:
-    tg_bot: TgBot
-
-
-def load_config(path=None):
-    env = Env()
-    env.read_env()
-    return Config(
-        tg_bot=TgBot(token=env('BOT_TOKEN'))
-    )
+class BotSettings(BaseSettings):
+    bot_token: SecretStr
+    redis_dsn: RedisDsn

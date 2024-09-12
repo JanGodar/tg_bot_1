@@ -20,4 +20,4 @@ jobs:
                 uses: docker/build-push-action@v5
                 with:
                     push: true
-                    tags: jangodar/test-docker-push:latest
+                    tags: jangodar/tg_bot_1:ubuntu

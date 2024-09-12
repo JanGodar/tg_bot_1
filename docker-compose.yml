@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  bot:
+    image: "jangodar/tg_bot_1:ubuntu"
+    restart: "unless-stopped"
+    environment:
+      - BOT_TOKEN=6894820119:AAF2RLqBpsPCCgZ09pleLFFa0rAfrXTNG7s
+      - REDIS_DSN=redis://redis_fsm
+  
+  redis_fsm:
+    image: "redis:7"
+    restart: "unless-stopped"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]

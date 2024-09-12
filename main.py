@@ -4,8 +4,9 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.fsm.storage.redis import RedisStorage
 
-from tg_bot_1.config_data.config import load_config
+from tg_bot_1.config_data.config import BotSettings
 from tg_bot_1.handlers import user_handlers, other_handlers
 from tg_bot_1.keyboards.set_menu import set_main_menu
 
@@ -23,11 +24,12 @@ async def main():
 
     logger.info('Starting bot')
 
-    config = load_config()
+    settings = BotSettings()
 
-    bot = Bot(token=config.tg_bot.token,
+    bot = Bot(token=settings.bot_token.get_secret_value(),
               default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    dp = Dispatcher()
+    storage = RedisStorage.from_url(str(settings.redis_dsn))
+    dp = Dispatcher(storage=storage)
 
     logger.info('Add routers')
     dp.include_router(user_handlers.router)
