@@ -9,5 +9,9 @@ services:
   redis_fsm:
     image: "redis:7"
     restart: "unless-stopped"
+    volumes: 
+      - "/home/ubuntu/redis/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "/home/ubuntu/redis/data:/data"
+    command: "redis-server /usr/local/etc/redis/redis.conf"
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
