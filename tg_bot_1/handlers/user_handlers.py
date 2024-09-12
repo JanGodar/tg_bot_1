@@ -25,7 +25,7 @@ async def process_start_command(message, state):
     users_db[message.from_user.id] = deepcopy(user_dict_template)
 
     data = await state.get_data()
-    attempt = data.get('num_attempt', 0)
+    attempt = data.get('attempt', 0)
     if attempt == 0:
         text = 'Your first attempt'
     else:
@@ -38,8 +38,8 @@ async def process_start_command(message, state):
         text=text,
         reply_markup=create_keyboard(KEYBOARD_DOG_CAT,
                                             LEXICON_RU['width']))
-    attempt += 1
-    await state.update_data(attempt)
+
+    await state.update_data(attempt = attempt + 1)
     print(attempt)
 
     #await state.clear()
