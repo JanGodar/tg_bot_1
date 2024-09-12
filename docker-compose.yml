@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   bot:
     image: "jangodar/tg_bot_1:ubuntu"
