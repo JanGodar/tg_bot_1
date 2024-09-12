@@ -41,7 +41,7 @@ async def process_start_command(message, state):
 
     await state.update_data(attempt = attempt + 1)
 
-    await state.clear()
+    #await state.clear()
     val = await state.get_state()
     logger.info('%s', val)
 
