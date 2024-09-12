@@ -23,33 +23,14 @@ class FSMFillForm(StatesGroup):
 @router.message(CommandStart())
 async def process_start_command(message, state):
     users_db[message.from_user.id] = deepcopy(user_dict_template)
-
-    data = await state.get_data()
-    attempt = data.get('attempt', 0)
-    if attempt == 0:
-        text = 'Your first attempt'
-    else:
-        text = f'Your {attempt} attempt'
-
-
-    #LEXICON_RU['/start']
-
     await message.answer(
-        text=text,
+        text=LEXICON_RU['/start'],
         reply_markup=create_keyboard(KEYBOARD_DOG_CAT,
                                             LEXICON_RU['width']))
-
-    await state.update_data(attempt = attempt + 1)
-    print(attempt)
-
-    #await state.clear()
+    await state.clear()
     val = await state.get_state()
     logger.info('%s', val)
-
     
-
-
-
 
 @router.message(Command(commands=['help']))
 async def process_help_command(message, state):
